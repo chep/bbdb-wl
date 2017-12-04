@@ -1,56 +1,56 @@
-;;; bbdb-wl-common.el --- 
-;; 
+;;; bbdb-wl-common.el ---
+;;
 ;; Filename: bbdb-wl-common.el
-;; Description: 
+;; Description:
 ;; Author: Christian
-;; Maintainer: 
+;; Maintainer:
 ;; Created: sáb feb 18 02:38:01 2012 (-0300)
-;; Version: 
-;; Last-Updated: 
-;;           By: 
+;; Version:
+;; Last-Updated:
+;;           By:
 ;;     Update #: 0
-;; URL: 
-;; Keywords: 
-;; Compatibility: 
-;; 
+;; URL:
+;; Keywords:
+;; Compatibility:
+;;
 ;; Features that might be required by this library:
 ;;
 ;;   None
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;;; Commentary: 
-;; 
+;;
+;;; Commentary:
+;;
 ;; Common functions for manipulating bbdb, and addrbook together.
-;; Also add more functionallity to bbdb and addrbook by requiring two 
+;; Also add more functionallity to bbdb and addrbook by requiring two
 ;; libraries: bbdb-wl-bbdb and bbdb-wl-addrmgr.
 ;;
 ;; Here you can find those functions that need both, BBDB and AddrMgr.
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Change Log:
-;; 
-;; 
+;;
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;;; Code:
 
 (require 'bbdb-wl-bbdb)
@@ -64,7 +64,7 @@
   ;;(interactive)
   ;; We need that the address buffer has been visited...
   (let ((buff (get-buffer "Address")))
-    (when buff      
+    (when buff
       ;; it has been visited...
       (with-current-buffer buff
 	;; For each item in the addressbook add it into the BBDB(if don't exists)
@@ -78,7 +78,7 @@
 				  nil ;; organizations
 				  (cons (nth 0 person) nil);; mail
 				  nil ;; phones
-				  nil ;; addresses 
+				  nil ;; addresses
 				  nil ;; notes
 				  )
 	    )
@@ -99,15 +99,15 @@ This will be saved temporally in the BBDB. For saving to the database files use 
     ;; The record exists(and is only one!), update data...
     (unless (member aka (bbdb-record-aka record))
       ;; The petname is not in the record! add it...
-      (bbdb-record-set-aka record 
+      (bbdb-record-set-aka record
 			   (cons aka (bbdb-record-aka record)))
-      
+
       )
     (unless (member mail (bbdb-record-mail record))
       ;; The mail is not there! add it...
       (bbdb-record-set-mail record
 			    (cons mail (bbdb-record-mail record)))
-      )    
+      )
     record
     )
   )
@@ -123,9 +123,9 @@ This will be saved temporally in the BBDB. For saving to the database files use 
   (bbdb-wl-syncbuffer-init)
   (bbdb-wl-syncbuffer)
   (message "Starting Syncrhonization from the Wanderlust's Addressbook...
-Please wait...")  
+Please wait...")
   (bbdb-wl-syncbuffer-show "Starting Syncrhonization from the Wanderlust's Addressbook...")
-  
+
   ;; Get the list of people
   (let ((lst (wl-addrmgr-local-list t)))
     ;; process each element adding to the BBDB if necessary
@@ -164,13 +164,13 @@ If the addrbook-entry is in the BBDB but hasn't that aka insert it
 If already exists all that information, do nothing."
   ;; Look for the contacts, if exists check the info.
   (let ((records (bbdb-wl-find (nth 2 addrbook-entry))))
-    (cond ((eq (length records) 1) ;; Exists and is the only one contact 
+    (cond ((eq (length records) 1) ;; Exists and is the only one contact
 	   (progn
 	     (bbdb-wl-syncbuffer-show "One matching record founded... updating info.")
 	     (bbdb-wl-update-record-with-addrbook (car records) addrbook-entry))
 	   )
-	   
-	  
+
+
 	  ((eq (length records) 0) ;; Doesn't exists.. create it
 	  (progn
 	    (bbdb-wl-syncbuffer-show "Record doesnt exists... creating it!")
@@ -181,15 +181,15 @@ If already exists all that information, do nothing."
 	  )
 
 	  ((> (length records) 1) ;; There are more records to update!!! Ask user!
-	   (progn 
+	   (progn
 	     (bbdb-wl-syncbuffer-show "There are various matches for record... asking user.")
-	     (let ((selected (- 
+	     (let ((selected (-
 			      (bbdb-wl-ask-what-to-update records addrbook-entry)
 			      1)))
 	       (when selected
 		 ;; User selected one... update it!
 		 (let ((record-selected (nth selected records)))
-		   (bbdb-wl-syncbuffer-show "User selects " 
+		   (bbdb-wl-syncbuffer-show "User selects "
 					    (bbdb-record-name record-selected))
 		   (bbdb-wl-update-record-with-addrbook record-selected
 							addrbook-entry)))))
@@ -216,10 +216,10 @@ What that will be updated:\n"
 	(selected 0))
     (while (or (> selected (length records))
 	       (< selected 1))
-      (setq selected (read-number msg ))		      
+      (setq selected (read-number msg ))
       )
     selected
-    )   
+    )
   )
 
 (defun bbdb-wl-get-records-names (records &optional separator count)
@@ -235,11 +235,11 @@ If count is t then put a number before the name."
 	       "\n")))
     (dolist (i records)
       (setq num (+ 1 num))
-      (setq aux (concat 
+      (setq aux (concat
 		 aux
 		 ;; Number first
 		 (when count
-		   (number-to-string num)) 
+		   (number-to-string num))
 		 ": "
 		 ;; Name in the record
 		 (bbdb-record-name i)
@@ -247,7 +247,7 @@ If count is t then put a number before the name."
 		 sep))
       )
     aux
-    )  
+    )
   )
 
 
@@ -267,7 +267,7 @@ If count is t then put a number before the name."
 	    (petname (bbdb-record-aka elt))
 	    (lst-emails (bbdb-record-mail elt)) ;; Take all emails!
 	    )
-	
+
 	;; if petname is a list just take only one petname!
 	(when (listp petname)
 	    (setq petname (car petname))
@@ -284,7 +284,7 @@ If count is t then put a number before the name."
     (bbdb-wl-syncbuffer-ending)
     )
   )
-   
+
 
 (provide 'bbdb-wl-common)
 
