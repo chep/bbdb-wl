@@ -117,14 +117,13 @@ If name is empty, it uses the email as name."
       (when (= length record 1)
 	(if update ;; If there are only one record and update is t then update...
 	    (bbdbl-wl-update-record record data-list) 	;; Record founded... update it.
-	  (bbdb-create-internal (cdr (assoc 'name data-list))      ;; name
-				(cdr (assoc 'affix data-list))     ;; affix
-				(cdr (assoc 'aka data-list))       ;; akas
-				(cdr (assoc 'org data-list))       ;; organizations
-				(cdr (assoc 'mail data-list))      ;; mails
-				(cdr (assoc 'phones data-list))    ;; phones
-				(cdr (assoc 'addresses data-list)) ;; addresses
-				(cdr (assoc 'notes data-list))     ;; notes
+	  (bbdb-create-internal :name (cdr (assoc 'name data-list))      ;; name
+				:affix (cdr (assoc 'affix data-list))     ;; affix
+				:aka (cdr (assoc 'aka data-list))       ;; akas
+				:organization(cdr (assoc 'org data-list))       ;; organizations
+				:mail (cdr (assoc 'mail data-list))      ;; mails
+				:phone (cdr (assoc 'phones data-list))    ;; phones
+				:address (cdr (assoc 'addresses data-list)) ;; addresses
 				)
 	  )
 	)

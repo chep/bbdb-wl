@@ -182,15 +182,9 @@ If NAME is given, use that name instead of the sender name."
   ;; Avoid duplication!
   ;;(let ((bbdb-no-duplicates t))  
     (if
-	(bbdb-create-internal name ;; name
-			      nil ;; affix
-			      nil ;; aka
-			      nil ;; organizations
-			      (cons (bbdb-wl-get-sender-address) nil);; mail
-			      nil ;; phones
-			      nil ;; addresses 
-			      nil ;; notes
-			      )
+	(bbdb-create-internal :name name ;; name
+			              :mail (cons (bbdb-wl-get-sender-address) nil);; mail
+			              )
 	(message "%s" "Record Added: Done")
       (message "%s" "Record not added... Possibly it is already in the database")
       )

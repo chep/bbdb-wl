@@ -72,15 +72,10 @@
 	  (unless (bbdb-wl-find-name (nth 2 person))
 	    ;; It doesn't exists... create it
 	    (message "%s %s %s %s" "Adding into BBDB: " (nth 0 person) (nth 1 person) (nth 2 person))
-	    (bbdb-create-internal (nth 2 person) ;; name
-				  nil ;; affix
-				  (cons (nth 1 person) nil) ;; aka
-				  nil ;; organizations
-				  (cons (nth 0 person) nil);; mail
-				  nil ;; phones
-				  nil ;; addresses
-				  nil ;; notes
-				  )
+	    (bbdb-create-internal :name (nth 2 person) ;; name
+				              :aka (cons (nth 1 person) nil) ;; aka
+				              :mail (cons (nth 0 person) nil);; mail
+				              )
 	    )
 	  )
 	)
