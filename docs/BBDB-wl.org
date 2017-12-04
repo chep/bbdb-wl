@@ -1,0 +1,101 @@
+#+TITLE: BBDB-WL doc.
+#+AUTHOR: Giménez, Christian
+
+This are a feature list and some comments about how it should/are done.
+
+See de [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org][TODO file]].
+
+* Modularized Design
+First of all, BBDB-WL design:
+
+#+BEGIN_SRC text
+                                      +----------------+
+                 +---> addrmgr  <-->  | Addr-mngr (WL) |                                    
+                 |                    +----------------+
+                 |
+  +------+       v                    +--------------+
+  | BBDB | <--> bbdb   <-->   wl <--> | Summary (WL) | 
+  +------+                    ^       +--------------+
+                              |
+                              |
+                              v          ___________________________  
+                            ignore <-->  | bbdb-wl-ignore.txt file |
+  
+  
+#+END_SRC
+
+
+* Name checking
+  Name are checked for:
+
+  - Format: if it is "Surname, Name" or "Name Surname" or "Name Secondname Surname"
+  - No strange character: only recognizable characters. This should be customizable.
+
+With this, BBDB will be more clean.
+
+See [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org::*Filter%20non-readable%20character%20from%20the%20name][this TODO entry]].
+    
+* Search Criteria
+
+The search criteria for inserting a record must be one of these and in this order:
+
+1. "From" Name
+2. "From" Mail Address
+
+It shouldn't match the [[*Ignore%20Criteria][ignore criteria]] declared below.
+
+* What to Sniff
+
+Currently (SVN version 33) only sniff the address and name. It is planned to sniff as much as it can:
+
+- Name
+- Email address
+- Telephone number
+- Address
+
+The use of ~bbdb-snarf~ should be great, but it is so interactive!
+
+* Ignore Criteria
+
+Address that match this criterias will be ignored and not even searched:
+
+- That matchs with the ~bbdb-wl-ignore-addr-regexp~ regexp.
+- That is listed in the ~bbdb-wl-ignore-file~.
+
+See ~bbdb-wl-ignore.el~ and the function ~bbdb-wl-should-ignore~ function.
+
+
+Take a look at [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org::*Filter%20out%20empty%20or%20"noreply"%20entries][this TODO entry]].
+
+* Migration from/to Addressbook
+There should be migration functions to take information from the addressbook and to give information to it.
+
+Syncing would be great.
+
+See [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org::*Updating%20the%20Addressbook%20to%20BBDB%20can%20make%20conflicts][this]] and [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org::*Sinchronization%20for%20the%20Addressbook][this]] TODO entry.
+* Inserting addresses directly from BBDB
+  Adding a "To:", "CC:" or "BBC:" field and filling with addresses with ease.
+
+  Just calling BBDB and searching will do the thing for selecting the destinatary.
+  
+See [[file:~/Documentos/soft_libre/bbdbv3-wl/branches/development/TODO.org::*Inserting%20addresses%20in%20the%20"To:"%20field][this]] TODO entry.
+
+* Licence
+
+    BBDB-wl.org
+    Copyright (C) 2013  Giménez, Christian N.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Martes 29 de Octubre del 2013
